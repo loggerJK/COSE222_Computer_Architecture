@@ -28,7 +28,7 @@ myloop:
 	lw s0, 0(t0)	# s0 <= [t0]
 	lw s1, 0(t1)	# s1 <= [t1]
 
-	bgt s0 s1 l1 	## if s0 < s1, then swap
+	bgt s0 s1 l1 	## if s0 <= s1, then swap
 	sw s0, 0(t1)	# [t1] <= s0
 	sw s1, 0(t0)	# [t0] <= s1
 
@@ -50,8 +50,6 @@ COPY:
 
 COPY_LOOP:
 	bgt s3, s4, EXIT # if s3 > 31 then EXIT, Counter Variable Check
-	# add t0, t0, s3 # t0 = t0 + s3, Address Update
-	# add t2, t2, s3	# t2 = t2 + s3, Address Update
 
 	lw s0, 0(t0) # s0 <= [t0]
 	sw s0, 0(t2) # [t2] <= s0
@@ -63,11 +61,11 @@ COPY_LOOP:
 	# Counter Variable Update
 	addi s3, s3, 1 # s3 = s3 + 1
 
-	j COPY_LOOP
+	j COPY_LOOP # jump to COPY_LOOP
 
 
 EXIT:
-	nop
+	nop # no operation
 
 
 .data
