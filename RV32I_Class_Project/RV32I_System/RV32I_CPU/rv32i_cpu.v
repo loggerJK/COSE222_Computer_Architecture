@@ -172,6 +172,7 @@ module aludec(input      [6:0] opcode,
 			 10'b0100000_000: alucontrol <= #`simdelay 5'b10000; // subtraction (sub)
 			 10'b0000000_111: alucontrol <= #`simdelay 5'b00001; // and (and)
 			 10'b0000000_110: alucontrol <= #`simdelay 5'b00010; // or (or)
+       10'b0000000_100: alucontrol <= #`simdelay 5'b00011; // xor
           default:         alucontrol <= #`simdelay 5'bxxxxx; // ???
         endcase
 		end
@@ -182,6 +183,7 @@ module aludec(input      [6:0] opcode,
 			 3'b000:  alucontrol <= #`simdelay 5'b00000; // addition (addi)
 			 3'b110:  alucontrol <= #`simdelay 5'b00010; // or (ori)
 			 3'b111:  alucontrol <= #`simdelay 5'b00001; // and (andi)
+       3'b100:  alucontrol <= #`simdelay 5'b00011; // xori
           default: alucontrol <= #`simdelay 5'bxxxxx; // ???
         endcase
 		end
@@ -242,9 +244,10 @@ module datapath(input         clk, reset,
   reg  [31:0] alusrc2;
   wire [31:0] branch_dest, jal_dest;
   wire		  Nflag, Zflag, Cflag, Vflag;
-  wire		  f3beq, f3blt;
+  wire		  f3beq, f3blt, f3bge, f3bgeu;
   wire		  beq_taken;
   wire		  blt_taken;
+  wire      bge_taken, bgeu_taken;
 
   assign rs1 = inst[19:15];
   assign rs2 = inst[24:20];
@@ -256,9 +259,14 @@ module datapath(input         clk, reset,
   //
   assign f3beq  = (funct3 == 3'b000);
   assign f3blt  = (funct3 == 3'b100);
+  assign f3bge  = (funct3 == 3'b101);
+  assign f3bgeu = (funct3 == 3'b111);
 
   assign beq_taken  =  branch & f3beq & Zflag;
   assign blt_taken  =  branch & f3blt & (Nflag != Vflag);
+  assign bge_taken  =  branch & f3bge & Nflag;
+  assign bgeu_taken  =  branch & f3bgeu & Nflag;
+
 
   assign branch_dest = (pc + se_br_imm);
   assign jal_dest 	= (pc + se_jal_imm);
@@ -268,7 +276,7 @@ module datapath(input         clk, reset,
      if (reset)  pc <= 32'b0;
 	  else 
 	  begin
-	      if (beq_taken | blt_taken) // branch_taken
+	      if (beq_taken | blt_taken | bge_taken | bgeu_taken) // branch_taken
 				pc <= #`simdelay branch_dest;
 		   else if (jal) // jal
 				pc <= #`simdelay jal_dest;

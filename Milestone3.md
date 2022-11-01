@@ -12,5 +12,5 @@
 - [x] jal
 
 
-- [ ] xori
-- [ ] bgeu
+- [x] xori
+- [ ] bge(u)

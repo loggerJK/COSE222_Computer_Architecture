@@ -226,9 +226,10 @@ module alu(input      [31:0] a, b,
   always@(*)
     case(alucont[3:0])
       4'b0000: result <= #`simdelay sum;    // A + B, A - B
-      4'b0001: result <= #`simdelay a & b;
-      4'b0010: result <= #`simdelay a | b;
+      4'b0001: result <= #`simdelay a & b;	// and
+      4'b0010: result <= #`simdelay a | b;	// or
       4'b1000: result <= #`simdelay {31'b0,sltu};
+	  4'b0011: result <= #`simdelay a ^ b;	// xor
       default: result <= #`simdelay 32'b0;
     endcase
 
@@ -243,10 +244,10 @@ module adder_32bit (input  [31:0] a, b,
 
 	wire [31:0]  ctmp;
 
-	assign N = sum[31];
-	assign Z = (sum == 32'b0);
-	assign C = ctmp[31];
-	assign V = ctmp[31] ^ ctmp[30];
+	assign N = sum[31];					// MSB (check pos/neg)
+	assign Z = (sum == 32'b0);			// all zero
+	assign C = ctmp[31];				// carry
+	assign V = ctmp[31] ^ ctmp[30];		// overflow
 
 	adder_1bit bit31 (.a(a[31]), .b(b[31]), .cin(ctmp[30]), .sum(sum[31]), .cout(ctmp[31]));
 	adder_1bit bit30 (.a(a[30]), .b(b[30]), .cin(ctmp[29]), .sum(sum[30]), .cout(ctmp[30]));
