@@ -8,7 +8,7 @@
 
 `timescale 1ns/1ns
 `define simdelay 1
-git
+
 `define REGFILE_FF
 `ifdef REGFILE_FF
 

@@ -1,5 +1,5 @@
 Flow report for RV32I_System
-Tue Nov 01 01:24:45 2022
+Tue Nov 01 23:05:46 2022
 Quartus II 64-Bit Version 13.1.0 Build 162 10/23/2013 SJ Web Edition
 
 
@@ -40,7 +40,7 @@ applicable agreement for further details.
 +---------------------------------------------------------------------------------+
 ; Flow Summary                                                                    ;
 +------------------------------------+--------------------------------------------+
-; Flow Status                        ; Successful - Tue Nov 01 01:24:45 2022      ;
+; Flow Status                        ; Successful - Tue Nov 01 23:05:46 2022      ;
 ; Quartus II 64-Bit Version          ; 13.1.0 Build 162 10/23/2013 SJ Web Edition ;
 ; Revision Name                      ; RV32I_System                               ;
 ; Top-level Entity Name              ; RV32I_System                               ;
@@ -64,7 +64,7 @@ applicable agreement for further details.
 +-------------------+---------------------+
 ; Option            ; Setting             ;
 +-------------------+---------------------+
-; Start date & time ; 11/01/2022 01:23:33 ;
+; Start date & time ; 11/01/2022 23:04:27 ;
 ; Main task         ; Compilation         ;
 ; Revision Name     ; RV32I_System        ;
 +-------------------+---------------------+
@@ -75,7 +75,7 @@ applicable agreement for further details.
 +-------------------------------------+---------------------------------------+---------------+-------------+----------------+
 ; Assignment Name                     ; Value                                 ; Default Value ; Entity Name ; Section Id     ;
 +-------------------------------------+---------------------------------------+---------------+-------------+----------------+
-; COMPILER_SIGNATURE_ID               ; 66610812347806.166723341309332        ; --            ; --          ; --             ;
+; COMPILER_SIGNATURE_ID               ; 66610812347806.166731146714492        ; --            ; --          ; --             ;
 ; EDA_OUTPUT_DATA_FORMAT              ; Vhdl                                  ; --            ; --          ; eda_simulation ;
 ; EDA_SIMULATION_TOOL                 ; ModelSim-Altera (VHDL)                ; <None>        ; --          ; --             ;
 ; MAX_CORE_JUNCTION_TEMP              ; 85                                    ; --            ; --          ; --             ;
@@ -94,12 +94,12 @@ applicable agreement for further details.
 +---------------------------+--------------+-------------------------+---------------------+------------------------------------+
 ; Module Name               ; Elapsed Time ; Average Processors Used ; Peak Virtual Memory ; Total CPU Time (on all processors) ;
 +---------------------------+--------------+-------------------------+---------------------+------------------------------------+
-; Analysis & Synthesis      ; 00:00:18     ; 1.0                     ; 4649 MB             ; 00:00:17                           ;
-; Fitter                    ; 00:00:32     ; 1.0                     ; 5009 MB             ; 00:00:29                           ;
+; Analysis & Synthesis      ; 00:00:21     ; 1.0                     ; 4644 MB             ; 00:00:20                           ;
+; Fitter                    ; 00:00:35     ; 1.0                     ; 5008 MB             ; 00:00:35                           ;
 ; Assembler                 ; 00:00:02     ; 1.0                     ; 4588 MB             ; 00:00:02                           ;
-; TimeQuest Timing Analyzer ; 00:00:06     ; 1.0                     ; 4662 MB             ; 00:00:05                           ;
-; EDA Netlist Writer        ; 00:00:05     ; 1.0                     ; 4572 MB             ; 00:00:05                           ;
-; Total                     ; 00:01:03     ; --                      ; --                  ; 00:00:58                           ;
+; TimeQuest Timing Analyzer ; 00:00:06     ; 1.0                     ; 4655 MB             ; 00:00:06                           ;
+; EDA Netlist Writer        ; 00:00:06     ; 1.0                     ; 4574 MB             ; 00:00:06                           ;
+; Total                     ; 00:01:10     ; --                      ; --                  ; 00:01:09                           ;
 +---------------------------+--------------+-------------------------+---------------------+------------------------------------+
 
 

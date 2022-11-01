@@ -11,6 +11,15 @@
 - [X] beq
 - [x] jal
 
+## Milestone 3
 
-- [x] xori
-- [ ] bge(u)
+SevenSeg1
+- [x] xor(i)
+- [x] bge(u)
+
+![Image](https://i.imgur.com/6rlTmsy.png)
+
+SevenSeg2
+- [X] jalr
+
+![Image](https://i.imgur.com/cOn6vwa.png)

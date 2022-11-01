@@ -222,7 +222,7 @@ module alu(input      [31:0] a, b,
 
   // unsigned lower (C clear) condition
   assign sltu = ~C ;   
-
+// TODO
   always@(*)
     case(alucont[3:0])
       4'b0000: result <= #`simdelay sum;    // A + B, A - B
@@ -247,7 +247,7 @@ module adder_32bit (input  [31:0] a, b,
 	assign N = sum[31];					// MSB (check pos/neg)
 	assign Z = (sum == 32'b0);			// all zero
 	assign C = ctmp[31];				// carry
-	assign V = ctmp[31] ^ ctmp[30];		// overflow
+	assign V = ctmp[31] ^ ctmp[30];		// 만약 두 비트가 다르다면 overflow
 
 	adder_1bit bit31 (.a(a[31]), .b(b[31]), .cin(ctmp[30]), .sum(sum[31]), .cout(ctmp[31]));
 	adder_1bit bit30 (.a(a[30]), .b(b[30]), .cin(ctmp[29]), .sum(sum[30]), .cout(ctmp[30]));

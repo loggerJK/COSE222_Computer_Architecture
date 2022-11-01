@@ -108,7 +108,7 @@ void SevenSeg()
   78:	001007b7          	lui	a5,0x100
   7c:	ffe78793          	addi	a5,a5,-2 # ffffe <stack+0xffbfe>
   80:	fee7f4e3          	bgeu	a5,a4,68 <SevenSeg+0x58>
-		//for (i=0; i<0x2; i++) ;
+//		for (i=0; i<0x2; i++) ;
 
 		*seg0_addr = SEG_A;
   84:	fe442783          	lw	a5,-28(s0)
