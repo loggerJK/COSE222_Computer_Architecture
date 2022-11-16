@@ -23,25 +23,26 @@ Z13 !s100 :m?LkhBnIAKiQ1^8C:`aT2
 !s85 0
 !s101 -O0
 vadder_1bit
+!i10b 1
 Z14 !s100 >91?41@9B1iO0iL<^;Vz;0
 Z15 Iz^^J53@hG9WdGQdQOYP363
 Z16 V]J[nU[1hnP5TbJMP^fIol0
 Z17 dC:\Computer Architecture\RV32I_Class_Project\RV32I_System_Sim
-Z18 w1667312811
+Z18 w1668087609
 Z19 8C:/Computer Architecture/RV32I_Class_Project/RV32I_System/RV32I_CPU/basic_modules.v
 Z20 FC:/Computer Architecture/RV32I_Class_Project/RV32I_System/RV32I_CPU/basic_modules.v
 Z21 L0 288
 R8
 r1
-31
-Z22 !s108 1667316597.788000
-Z23 !s107 C:/Computer Architecture/RV32I_Class_Project/RV32I_System/RV32I_CPU/basic_modules.v|
-Z24 !s90 -reportprogress|300|-work|work|C:/Computer Architecture/RV32I_Class_Project/RV32I_System/RV32I_CPU/basic_modules.v|
-R12
-!i10b 1
 !s85 0
+31
+Z22 !s108 1668260917.126000
+Z23 !s107 C:/Computer Architecture/RV32I_Class_Project/RV32I_System/RV32I_CPU/basic_modules.v|
+Z24 !s90 -reportprogress|30|-work|work|C:/Computer Architecture/RV32I_Class_Project/RV32I_System/RV32I_CPU/basic_modules.v|
 !s101 -O0
+R12
 vadder_32bit
+!i10b 1
 Z25 !s100 ZG=j?VzLLA4mE;On4?4<M2
 Z26 I<aOzl_6?YFQOg[K[kN;MF2
 Z27 V2a8W<eIGCaS>^Wh314@KB0
@@ -52,14 +53,13 @@ R20
 Z28 L0 240
 R8
 r1
+!s85 0
 31
 R22
 R23
 R24
-R12
-!i10b 1
-!s85 0
 !s101 -O0
+R12
 vAddr_Decoder
 Z29 IC<9L>Sc<KQWLfFYLLc=8R2
 Z30 VYZUiY@2bCD3RmSiD^JG2z0
@@ -750,8 +750,9 @@ Z186 !s100 GWS4?RnQ?gi8G^RoGMK`F2
 !s85 0
 !s101 -O0
 valu
-Z187 !s100 jSeb;oFXoi;<dI?KJC`SM0
-Z188 IKR091KA7g]RdHMnz[d5J=1
+!i10b 1
+Z187 !s100 8[CPm^FznC68zW30MN[>l3
+Z188 I;SCLjQQbOUS`JO=kJ4:UE2
 Z189 VY[dlW?oC0]`SXN0VNaf780
 R17
 R18
@@ -760,33 +761,32 @@ R20
 Z190 L0 198
 R8
 r1
+!s85 0
 31
 R22
 R23
 R24
-R12
-!i10b 1
-!s85 0
 !s101 -O0
+R12
 valudec
-!i10b 1
-Z191 !s100 QX7W:`[h]k:OOdSF^i@eQ3
-Z192 IVBZ3AoDYa=OFCFi`K<WBL0
+Z191 !s100 CfO5`elzfUZ0aS2k:mmc20
+Z192 I0zhJLBSj58;<Y97Qj1z5<2
 Z193 V<MTfeadkAUVW_zEX58RE50
 R17
-Z194 w1667315975
+Z194 w1668260346
 Z195 8C:/Computer Architecture/RV32I_Class_Project/RV32I_System/RV32I_CPU/rv32i_cpu.v
 Z196 FC:/Computer Architecture/RV32I_Class_Project/RV32I_System/RV32I_CPU/rv32i_cpu.v
-Z197 L0 160
+Z197 L0 166
 R8
 r1
-!s85 0
 31
-Z198 !s108 1667316597.929000
+Z198 !s108 1668260916.977000
 Z199 !s107 C:/Computer Architecture/RV32I_Class_Project/RV32I_System/RV32I_CPU/rv32i_cpu.v|
-Z200 !s90 -reportprogress|30|-work|work|C:/Computer Architecture/RV32I_Class_Project/RV32I_System/RV32I_CPU/rv32i_cpu.v|
-!s101 -O0
+Z200 !s90 -reportprogress|300|-work|work|C:/Computer Architecture/RV32I_Class_Project/RV32I_System/RV32I_CPU/rv32i_cpu.v|
 R12
+!i10b 1
+!s85 0
+!s101 -O0
 varm_m_cntr
 Z201 I7WgC8=eDZ8zaN>i4YznI;2
 Z202 VnZ7bTfk5X@6QmGaNoIOHO1
@@ -902,24 +902,24 @@ Z224 !s100 J`[QDB]3ePUk=F2TOP?El2
 !s85 0
 !s101 -O0
 vcontroller
-!i10b 1
-Z225 !s100 fEoh^3X>jWhb8=I6JVQo42
-Z226 I;ZOB<i>1NPhg5UiI@:=332
+Z225 !s100 FN6[184Zmo5@Mf_]L_>3A0
+Z226 I36;X5Y1zCW`=]=n`ZE:fV2
 Z227 VS[Z^RUOl;1ZUalDPQln5<1
 R17
 R194
 R195
 R196
-L0 72
+L0 78
 R8
 r1
-!s85 0
 31
 R198
 R199
 R200
-!s101 -O0
 R12
+!i10b 1
+!s85 0
+!s101 -O0
 vcycloneiiigl_post_divider
 Z228 IJi<GBg7]F<`>k9I;iPN`h0
 Z229 VE[DCIBKzdZ_5J1e=a>ciB3
@@ -940,24 +940,24 @@ Z231 !s100 >BAGW@27>z72Bj6g1B9oB3
 !s85 0
 !s101 -O0
 vdatapath
-!i10b 1
-Z232 !s100 =L8@jc`PlXJldi^Bo7<h62
-Z233 IjOUJanQ?I=FAmj`bkUfPO3
-Z234 Vd@o[h6a;dQo647WF;Cg7I1
+Z232 IA73YUiNi]WzJOF;2SCQnG2
+Z233 VS7k7`MiRIV[^GN@Czz8FA0
 R17
 R194
 R195
 R196
-Z235 L0 215
+Z234 L0 228
 R8
 r1
-!s85 0
 31
 R198
 R199
 R200
-!s101 -O0
 R12
+!i10b 1
+Z235 !s100 QTa;GaYD`;<NbQ]__VzOR1
+!s85 0
+!s101 -O0
 vdcfifo
 Z236 IXoGe2GBaRzCS^g3A>cKNc1
 Z237 VBelBX1OQY@SOTCS?5IFj@1
@@ -1856,24 +1856,24 @@ Z436 !s100 HWVJYNTBRL2UjUS7N>DY71
 !s85 0
 !s101 -O0
 vmaindec
-!i10b 1
-Z437 !s100 gL:[jDm[PPh?G<BjK2IL02
-Z438 IQbOnb?GN;X?BOI=Vnzkja1
+Z437 !s100 [1eP1Qc6R2QN>_mEbG`_F1
+Z438 I5l^6Z6>=G3`^3K>O^;;EW1
 Z439 VdhXzYGC][edb4:W<;1c:53
 R17
 R194
 R195
 R196
-Z440 L0 124
+Z440 L0 130
 R8
 r1
-!s85 0
 31
 R198
 R199
 R200
-!s101 -O0
 R12
+!i10b 1
+!s85 0
+!s101 -O0
 vMF_cycloneiii_pll
 Z441 I]M60Y=R[STXA>VfLZhKEK0
 Z442 V8SACR3<jj>]mCQFb;Fhcz1
@@ -2055,6 +2055,7 @@ Z485 !s100 ^MEOfT:2MX3Y25EcO<hB<1
 !s85 0
 !s101 -O0
 vmux2
+!i10b 1
 Z486 !s100 Zg<`c>a3kfQ78a1aY:MHM0
 Z487 IjY<kChzbIE`5bNFhZhz8_1
 Z488 VT8RWJBjAIeM]>7U=5kBkT1
@@ -2065,14 +2066,13 @@ R20
 Z489 L0 298
 R8
 r1
+!s85 0
 31
 R22
 R23
 R24
-R12
-!i10b 1
-!s85 0
 !s101 -O0
+R12
 vparallel_add
 Z490 I9JJFjnGRSBH_<zj>c?IVo1
 Z491 VbbDK2gmh@AWdUES[Zi3TN0
@@ -2150,6 +2150,7 @@ Z510 !s107 D:/KU/ESCA/teaching/cose222_CA/riscv/RISCV_design-clean/RV32I_CPU_Pro
 !s85 0
 !s101 -O0
 vregfile
+!i10b 1
 Z511 !s100 kKT3igc30CEDHMgfNHh_10
 Z512 IzhGYGkHeN4D_aLL_K1;VZ3
 Z513 V0;kcV]GA@hGafL0jTQ04a3
@@ -2160,18 +2161,16 @@ R20
 L0 15
 R8
 r1
+!s85 0
 31
 R22
 R23
 R24
-R12
-!i10b 1
-!s85 0
 !s101 -O0
+R12
 vrv32i_cpu
-!i10b 1
-Z514 !s100 N@QDlmmR_9jLCNXlZN<<z0
-Z515 I=6FRTJ[lOa<QXfWof`fIQ0
+Z514 !s100 GgXF64NP9:iEjlji8Ggng2
+Z515 I@Sn5L<b41Djf]=4dhZc4@3
 Z516 VC;H2n;KC1aZSnAiUDXcPL0
 R17
 R194
@@ -2180,13 +2179,14 @@ R196
 L0 12
 R8
 r1
-!s85 0
 31
 R198
 R199
 R200
-!s101 -O0
 R12
+!i10b 1
+!s85 0
+!s101 -O0
 vRV32I_System
 Z517 IYUc7C9BU0Rj5Nz:nPS>7l2
 Z518 V[^DSFKj=j]FV6fohJOiTf3

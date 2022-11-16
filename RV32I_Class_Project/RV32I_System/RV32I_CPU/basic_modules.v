@@ -222,12 +222,12 @@ module alu(input      [31:0] a, b,
 
   // unsigned lower (C clear) condition
   assign sltu = ~C ;   
-// TODO
   always@(*)
     case(alucont[3:0])
       4'b0000: result <= #`simdelay sum;    // A + B, A - B
       4'b0001: result <= #`simdelay a & b;	// and
       4'b0010: result <= #`simdelay a | b;	// or
+      4'b0100: result <= #`simdelay a << b[4:0];  // shift left logical (sll(i))
       4'b1000: result <= #`simdelay {31'b0,sltu};
 	  4'b0011: result <= #`simdelay a ^ b;	// xor
       default: result <= #`simdelay 32'b0;

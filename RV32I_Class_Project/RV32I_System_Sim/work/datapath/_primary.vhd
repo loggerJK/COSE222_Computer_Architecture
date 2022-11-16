@@ -15,8 +15,10 @@ entity datapath is
         branch          : in     vl_logic;
         jal             : in     vl_logic;
         jalr            : in     vl_logic;
+        inst_dec        : out    vl_logic_vector(31 downto 0);
         pc              : out    vl_logic_vector(31 downto 0);
-        aluout          : out    vl_logic_vector(31 downto 0);
+        aluout_mem      : out    vl_logic_vector(31 downto 0);
+        memwrite_mem    : out    vl_logic;
         MemWdata        : out    vl_logic_vector(31 downto 0);
         MemRdata        : in     vl_logic_vector(31 downto 0)
     );
