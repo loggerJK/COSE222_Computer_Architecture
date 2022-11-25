@@ -43,3 +43,9 @@ pc_enable이 0이라서 아예 업데이트가 안됨 : 등가 연산자로 해�
 sw 연산자의 경우에도 forwarding / stall 이 필요함을 발견함
 sw rs1, rs2, imm 연산자는 이전 3개 instruction을 검사해야함
 
+## Milestone 5
+- [x] bne
+- [x] btaken으로 통합하기
+- [x] mux 2개 새로 만들기
+- [x] EX 단계로 branch 옮기기
+- [x] nop 추가

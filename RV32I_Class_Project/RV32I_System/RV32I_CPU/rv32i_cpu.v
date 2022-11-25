@@ -23,7 +23,7 @@ module rv32i_cpu (
   wire [4:0]  alucontrol;
   wire        memtoreg, memwrite;
   wire        branch, jal, jalr;
-  wire [31:0] inst_dec;   // add inst_dec
+  wire [31:0] inst_dec_mux;   // add inst_dec
   wire        memwrite_mem;
 
   assign Memwrite = memwrite_mem ;
@@ -31,9 +31,9 @@ module rv32i_cpu (
   // Instantiate Controller
   controller i_controller(
     // ########### Jiwon Kang : Start ###########
-      .opcode		(inst_dec[6:0]), 
-		.funct7		(inst_dec[31:25]), 
-		.funct3		(inst_dec[14:12]), 
+      .opcode		(inst_dec_mux[6:0]), 
+		.funct7		(inst_dec_mux[31:25]), 
+		.funct3		(inst_dec_mux[14:12]), 
     // ########### Jiwon Kang : End ###########
 		.auipc		(auipc),
 		.lui			(lui),
@@ -60,7 +60,7 @@ module rv32i_cpu (
 		.jal				(jal),
 		.jalr				(jalr),
 		.alucontrol		(alucontrol),
-    .inst_dec   (inst_dec), // add inst_dec
+    .inst_dec_mux   (inst_dec_mux), // add inst_dec
 		.pc				(pc),
 		.inst				(inst),
 		.aluout_mem			(Memaddr),  // aluout --> aluout_mem
@@ -122,6 +122,7 @@ endmodule
 `define OP_B			7'b1100011
 `define OP_U_LUI		7'b0110111
 `define OP_J_JAL		7'b1101111
+`define NOP         8'h00000013
 
 //
 // Main decoder generates all control signals except alucontrol 
@@ -237,7 +238,7 @@ module datapath(input         clk, reset,
                 input         branch,
                 input         jal,
                 input         jalr,
-                output reg [31:0] inst_dec,
+                output reg [31:0] inst_dec_mux,
                 output reg [31:0] pc,
                 output reg [31:0] aluout_mem, // change to mem
                 output reg memwrite_mem,
@@ -260,16 +261,17 @@ module datapath(input         clk, reset,
   reg  [31:0] alusrc2;
   wire [31:0] branch_dest, jal_dest;
   wire		  Nflag, Zflag, Cflag, Vflag;
-  wire		  f3beq, f3blt, f3bge, f3bgeu;
+  wire		  f3beq, f3blt, f3bge, f3bgeu, f3bne;
   wire		  beq_taken;
   wire		  blt_taken;
   wire      bge_taken, bgeu_taken;
+  wire      bne_taken, b_taken;
 
-  assign rs1 = inst_dec[19:15];
-  assign rs2 = inst_dec[24:20];
-  assign opcode = inst_dec[6:0]; // assign opcode
-  assign rd  = inst_dec[11:7];
-  assign funct3  = inst_dec[14:12];
+  assign rs1 = inst_dec_mux[19:15];
+  assign rs2 = inst_dec_mux[24:20];
+  assign opcode = inst_dec_mux[6:0]; // assign opcode
+  assign rd  = inst_dec_mux[11:7];
+  assign funct3  = inst_dec_mux[14:12];
 
 // ########### Jiwon Kang : Start ###########
 
@@ -282,7 +284,7 @@ reg [4:0] alucontrol_exe;
 reg alusrc_exe, alusrc_mem, alusrc_wb, auipc_exe, lui_exe, jal_exe, jalr_exe;
 
 reg [4:0] rs1_exe, rs2_exe, rd_exe, rs1_mem, rs2_mem, rd_mem, rd_wb;
-reg [31:0] se_imm_itype_exe, se_imm_stype_exe, auipc_lui_imm_exe, se_jal_imm_exe, se_br_imm_exe, rs1_data_exe, rs2_data_exe, branch_dest_mem, jal_dest_mem, MemRdata_wb, aluout_wb, rs2_data_mem, inst_exe, inst_mem, inst_wb;
+reg [31:0] se_imm_itype_exe, se_imm_stype_exe, auipc_lui_imm_exe, se_jal_imm_exe, se_br_imm_exe, rs1_data_exe, rs2_data_exe, branch_dest_mem, jal_dest_mem, MemRdata_wb, aluout_wb, rs2_data_mem, inst_exe, inst_mem, inst_wb, inst_dec, inst_mux;
 reg Nflag_mem, Zflag_mem, Cflag_mem, Vflag_mem;
 reg ff_enable, pc_enable;
 reg [2:0] funct3_exe, funct3_mem;
@@ -299,7 +301,7 @@ wire [31:0] aluout;
     if (ff_enable !== 1'b0)
     begin
       pc_dec <= pc;
-      inst_dec <= inst;
+      inst_dec <= inst_mux;
     end
   end
 
@@ -307,7 +309,7 @@ wire [31:0] aluout;
   always @(posedge clk)
   begin
     // Control Signal
-    inst_exe <= inst_dec;
+    inst_exe <= inst_dec_mux;
     pc_exe <= pc_dec;
     opcode_exe <= opcode;
     memtoreg_exe <= memtoreg;
@@ -475,15 +477,19 @@ end
 
   // PC (Program Counter) logic 
   //
-  assign f3beq  = (funct3_mem == 3'b000);
-  assign f3blt  = (funct3_mem == 3'b100);
-  assign f3bge  = (funct3_mem == 3'b101);
-  assign f3bgeu = (funct3_mem == 3'b111);
-  // ########### Jiwon Kang : change to mem variable ###########
-  assign beq_taken  =  branch_mem & f3beq & Zflag_mem;
-  assign blt_taken  =  branch_mem & f3blt & (Nflag_mem != Vflag_mem);
-  assign bge_taken  =  branch_mem & f3bge & (Nflag_mem == Vflag_mem);
-  assign bgeu_taken =  branch_mem & f3bgeu & Cflag_mem;
+  assign f3beq  = (funct3_exe == 3'b000);
+  assign f3blt  = (funct3_exe == 3'b100);
+  assign f3bge  = (funct3_exe == 3'b101);
+  assign f3bgeu = (funct3_exe == 3'b111);
+  assign f3bne  = (funct3_exe == 3'b001);
+
+  // ########### Jiwon Kang : change to EX variable ###########
+  assign beq_taken  =  branch_exe & f3beq & Zflag_mem;
+  assign blt_taken  =  branch_exe & f3blt & (Nflag_mem != Vflag_mem);
+  assign bge_taken  =  branch_exe & f3bge & (Nflag_mem == Vflag_mem);
+  assign bne_taken  =  branch_exe & f3bne & ~Zflag;
+  assign bgeu_taken =  branch_exe & f3bgeu & Cflag_mem;
+  assign b_taken = beq_taken | blt_taken | bge_taken | bgeu_taken | bne_taken;
   // ########### Jiwon Kang : End ###########
 
 
@@ -491,7 +497,6 @@ end
 // ########### Jiwon Kang : Start ###########
   assign branch_dest = (pc_exe + se_br_imm_exe);
   assign jal_dest 	= (pc_exe + se_jal_imm_exe);
-// ########### Jiwon Kang : End ###########
 
   always @(posedge clk, posedge reset)
   begin
@@ -499,24 +504,54 @@ end
 	  else if (pc_enable !== 1'b0) // only if pc_enable
     // else
 	  begin
-	      if (beq_taken | blt_taken | bge_taken | bgeu_taken) // branch_taken
-				pc <= #`simdelay branch_dest_mem;
-        else if (jalr)
+	      if (b_taken) // branch_taken
+				pc <= #`simdelay branch_dest;
+        else if (jalr_exe)
         pc <= #`simdelay aluout_mem;
-		   else if (jal) // jal
-				pc <= #`simdelay jal_dest_mem;
+		   else if (jal_exe) /// jal
+				pc <= #`simdelay jal_dest;
 		   else 
 				pc <= #`simdelay (pc + 4);
 	  end
   end
+// ########### Jiwon Kang : End ###########
+  
+// ########### Jiwon Kang : Control Hazard ###########
+
+always @(*)
+begin
+  if (b_taken || jal_exe || jalr_exe)
+  begin
+    inst_mux <= `NOP;
+  end
+  else 
+  begin
+    inst_mux <= inst;
+  end
+end
+
+always @(*)
+begin
+  if (b_taken || jal_exe || jalr_exe)
+  begin
+    inst_dec_mux <= `NOP;
+  end
+  else 
+  begin
+    inst_dec_mux <= inst_dec;
+  end
+end
+
+
+// ########### Jiwon Kang : End ###########
 
 
   // JAL immediate
-  assign jal_imm[20:1] = {inst_dec[31],inst_dec[19:12],inst_dec[20],inst_dec[30:21]};
+  assign jal_imm[20:1] = {inst_dec_mux[31],inst_dec_mux[19:12],inst_dec_mux[20],inst_dec_mux[30:21]};
   assign se_jal_imm[31:0] = {{11{jal_imm[20]}},jal_imm[20:1],1'b0};
 
   // Branch immediate
-  assign br_imm[12:1] = {inst_dec[31],inst_dec[7],inst_dec[30:25],inst_dec[11:8]};
+  assign br_imm[12:1] = {inst_dec_mux[31],inst_dec_mux[7],inst_dec_mux[30:25],inst_dec_mux[11:8]};
   assign se_br_imm[31:0] = {{19{br_imm[12]}},br_imm[12:1],1'b0};
 
 
@@ -577,9 +612,9 @@ end
 	end
 // ########### Jiwon Kang : End ###########
 	
-	assign se_imm_itype[31:0] = {{20{inst_dec[31]}},inst_dec[31:20]};
-	assign se_imm_stype[31:0] = {{20{inst_dec[31]}},inst_dec[31:25],inst_dec[11:7]};
-	assign auipc_lui_imm[31:0] = {inst_dec[31:12],12'b0};
+	assign se_imm_itype[31:0] = {{20{inst_dec_mux[31]}},inst_dec_mux[31:20]};
+	assign se_imm_stype[31:0] = {{20{inst_dec_mux[31]}},inst_dec_mux[31:25],inst_dec_mux[11:7]};
+	assign auipc_lui_imm[31:0] = {inst_dec_mux[31:12],12'b0};
 
 // ########### Jiwon Kang : Change to wb ###########
 	// Data selection for writing to RF
