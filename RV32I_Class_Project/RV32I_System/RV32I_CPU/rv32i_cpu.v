@@ -261,11 +261,11 @@ module datapath(input         clk, reset,
   reg  [31:0] alusrc2;
   wire [31:0] branch_dest, jal_dest;
   wire		  Nflag, Zflag, Cflag, Vflag;
-  wire		  f3beq, f3blt, f3bge, f3bgeu, f3bne;
+  wire		  f3beq, f3blt, f3bge, f3bgeu, f3bne, f3bltu;
   wire		  beq_taken;
   wire		  blt_taken;
   wire      bge_taken, bgeu_taken;
-  wire      bne_taken, b_taken;
+  wire      bne_taken, b_taken, bltu_taken;
 
   assign rs1 = inst_dec_mux[19:15];
   assign rs2 = inst_dec_mux[24:20];
@@ -317,7 +317,8 @@ wire [31:0] aluout;
     else regwrite_exe <= 1'b0;
     if (ff_enable !== 1'b0) memwrite_exe <= memwrite;
     else memwrite_exe <= 1'b0;
-    branch_exe <= branch;
+    if (ff_enable !== 1'b0) branch_exe <= branch;
+    else branch_exe <= 1'b0;
     alucontrol_exe <= alucontrol;
     alusrc_exe <= alusrc;
     auipc_exe <= auipc;
@@ -438,7 +439,7 @@ wire [31:0] aluout;
    // load inst hazard detection unit
   always @(*)
   begin
-    if ((opcode_exe == `OP_I_LOAD) && ((rd_exe == rs1) || (rd_exe == rs2))) 
+    if ((opcode_exe == `OP_I_LOAD) && ((rd_exe == rs1) || (rd_exe == rs2)) && regwrite_exe == 1'b1) 
     begin
         // Control Signal 0 -> Make EX nop
         ff_enable <= 1'b0;
@@ -469,10 +470,11 @@ end
  // rs2_data_exe Mux at EXE
   always @(*)
   begin
-    if (mux_rs2_data_exe_rd_data) rs2_data_exe_mux <= rd_data;
+    if (mux_alusrc2_aluout_mem) rs2_data_exe_mux <= aluout_mem; // Mem -> Exe
+    else if (mux_rs2_data_exe_rd_data) rs2_data_exe_mux <= rd_data;  // Wb -> Exe
     else rs2_data_exe_mux <= rs2_data_exe;
   end
-  //
+
 // ########### Jiwon Kang : End ###########
 
   // PC (Program Counter) logic 
@@ -482,14 +484,17 @@ end
   assign f3bge  = (funct3_exe == 3'b101);
   assign f3bgeu = (funct3_exe == 3'b111);
   assign f3bne  = (funct3_exe == 3'b001);
+  assign f3bltu = (funct3_exe == 3'b110);
+
 
   // ########### Jiwon Kang : change to EX variable ###########
-  assign beq_taken  =  branch_exe & f3beq & Zflag_mem;
-  assign blt_taken  =  branch_exe & f3blt & (Nflag_mem != Vflag_mem);
-  assign bge_taken  =  branch_exe & f3bge & (Nflag_mem == Vflag_mem);
+  assign beq_taken  =  branch_exe & f3beq & Zflag;
+  assign blt_taken  =  branch_exe & f3blt & (Nflag != Vflag);
+  assign bge_taken  =  branch_exe & f3bge & (Nflag == Vflag);
   assign bne_taken  =  branch_exe & f3bne & ~Zflag;
-  assign bgeu_taken =  branch_exe & f3bgeu & Cflag_mem;
-  assign b_taken = beq_taken | blt_taken | bge_taken | bgeu_taken | bne_taken;
+  assign bgeu_taken =  branch_exe & f3bgeu & Cflag;
+  assign bltu_taken =  branch_exe & f3bltu & ~Cflag;
+  assign b_taken = (beq_taken | blt_taken | bge_taken | bgeu_taken | bne_taken | bltu_taken);
   // ########### Jiwon Kang : End ###########
 
 
@@ -507,7 +512,7 @@ end
 	      if (b_taken) // branch_taken
 				pc <= #`simdelay branch_dest;
         else if (jalr_exe)
-        pc <= #`simdelay aluout_mem;
+        pc <= #`simdelay aluout;
 		   else if (jal_exe) /// jal
 				pc <= #`simdelay jal_dest;
 		   else 
@@ -608,7 +613,7 @@ end
 		else if (alusrc_exe)					          alusrc2[31:0] = se_imm_itype_exe[31:0];
     else if (mux_alusrc2_aluout_mem === 1'b1)           alusrc2[31:0] = aluout_mem[31:0];
     else if (mux_rs2_data_exe_rd_data === 1'b1)            alusrc2[31:0] = rd_data[31:0];
-		else									              alusrc2[31:0] = rs2_data[31:0];
+		else									              alusrc2[31:0] = rs2_data_exe[31:0];
 	end
 // ########### Jiwon Kang : End ###########
 	

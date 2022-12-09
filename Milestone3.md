@@ -49,3 +49,8 @@ sw rs1, rs2, imm 연산자는 이전 3개 instruction을 검사해야함
 - [x] mux 2개 새로 만들기
 - [x] EX 단계로 branch 옮기기
 - [x] nop 추가
+
+## Last Project
+- [x] blt
+- [x] bge
+- [ ] bltu
