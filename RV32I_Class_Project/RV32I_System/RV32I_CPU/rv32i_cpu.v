@@ -293,6 +293,7 @@ reg mux_rs1_data_rd_data, mux_rs2_data_rd_data, mux_alusrc1_aluout_mem, mux_alus
 reg[6:0] opcode_exe, opcode_mem;
 reg [31:0] rs1_data_mux, rs2_data_mux, rs2_data_exe_mux;
 wire [31:0] aluout;
+reg b_occured, b_occured_dec, b_occured_dec_mux, b_occured_exe, b_occured_mem, b_occured_wb;
 
 
 // fetch --> dec
@@ -302,6 +303,7 @@ wire [31:0] aluout;
     begin
       pc_dec <= pc;
       inst_dec <= inst_mux;
+      b_occured_dec <= b_occured;
     end
   end
 
@@ -319,6 +321,7 @@ wire [31:0] aluout;
     else memwrite_exe <= 1'b0;
     if (ff_enable !== 1'b0) branch_exe <= branch;
     else branch_exe <= 1'b0;
+    b_occured_exe <= b_occured_dec_mux;
     alucontrol_exe <= alucontrol;
     alusrc_exe <= alusrc;
     auipc_exe <= auipc;
@@ -368,6 +371,7 @@ wire [31:0] aluout;
     // branch src
     branch_dest_mem <= branch_dest;
     jal_dest_mem <= jal_dest;
+    b_occured_mem <= b_occured_exe;
 
     // ALU Output
     aluout_mem <= aluout;
@@ -391,6 +395,7 @@ wire [31:0] aluout;
     memtoreg_wb <= memtoreg_mem;
     jal_wb <= jal_mem;
     jalr_wb  <= jalr_mem;
+    b_occured_wb <= b_occured_mem;
 
     // Register
     rd_wb <= rd_mem;
@@ -408,29 +413,29 @@ wire [31:0] aluout;
     // First : Mem to exe
     // ALU에 의해 업데이트되는 register value가 나중에 필요한 경우
     begin
-      if (regwrite_mem == 1'b1 && rd_mem == rs1_exe) mux_alusrc1_aluout_mem <= 1'b1;  // put aluout_mem to alusrc1
+      if (b_occured_mem !== 1 && regwrite_mem == 1'b1 && rd_mem == rs1_exe) mux_alusrc1_aluout_mem <= 1'b1;  // put aluout_mem to alusrc1
       else  mux_alusrc1_aluout_mem <= 1'b0;  
     end
     begin
-      if (regwrite_mem == 1'b1 && rd_mem == rs2_exe) mux_alusrc2_aluout_mem <= 1'b1;  // put aluout_mem to  alursrc2 
+      if (b_occured_mem !== 1 && regwrite_mem == 1'b1 && rd_mem == rs2_exe) mux_alusrc2_aluout_mem <= 1'b1;  // put aluout_mem to  alursrc2 
       else  mux_alusrc2_aluout_mem <= 1'b0;  
     end
     // Second : WB to exe
     begin
-      if (regwrite_wb == 1'b1 && rd_wb == rs1_exe) mux_alusrc1_rd_data <= 1'b1; 
+      if (b_occured_wb !== 1 && regwrite_wb == 1'b1 && rd_wb == rs1_exe) mux_alusrc1_rd_data <= 1'b1; 
       else mux_alusrc1_rd_data <= 1'b0;
     end
     begin
-      if (regwrite_wb == 1'b1 && rd_wb == rs2_exe) mux_rs2_data_exe_rd_data <= 1'b1;
+      if ( b_occured_wb !== 1 && regwrite_wb == 1'b1 && rd_wb == rs2_exe) mux_rs2_data_exe_rd_data <= 1'b1;
       else mux_rs2_data_exe_rd_data <= 1'b0;
     end
     // Third : WB to dec, updated register value = rd_data, if this maches with rs1_data or rs2_data, assign.
     begin
-      if (regwrite_wb == 1'b1 && rd_wb == rs1) mux_rs1_data_rd_data <= 1'b1;
+      if (b_occured_wb !== 1 && regwrite_wb == 1'b1 && rd_wb == rs1) mux_rs1_data_rd_data <= 1'b1;
       else mux_rs1_data_rd_data <= 1'b0;
     end
     begin
-      if (regwrite_wb == 1'b1 && rd_wb == rs2) mux_rs2_data_rd_data <= 1'b1;
+      if (b_occured_wb !== 1 && regwrite_wb == 1'b1 && rd_wb == rs2) mux_rs2_data_rd_data <= 1'b1;
       else mux_rs2_data_rd_data <= 1'b0;
     end
   end
@@ -528,10 +533,12 @@ begin
   if (b_taken || jal_exe || jalr_exe)
   begin
     inst_mux <= `NOP;
+    b_occured <= 1'b1;
   end
   else 
   begin
     inst_mux <= inst;
+    b_occured <= 1'b0;
   end
 end
 
@@ -540,10 +547,12 @@ begin
   if (b_taken || jal_exe || jalr_exe)
   begin
     inst_dec_mux <= `NOP;
+    b_occured_dec_mux <= 1'b1;
   end
   else 
   begin
     inst_dec_mux <= inst_dec;
+    b_occured_dec_mux <= b_occured_dec;
   end
 end
 
