@@ -8,7 +8,8 @@
 - Implement & analayze **sorting algorithm w/ RV32I assembly**
 
 # Milestone
-- Implement simple **single-cyle RV32I CPU which supports pipelining** (**Verilog**) 
+- Implement simple **single-cyle RV32I CPU which supports pipelining** (**Verilog**)
+- Worked mainly in `Milestones/RV32I_Class_Project_Milestone_*/RV32I_System/RV32I_CPU/rv32i_cpu.v` 
 
 ### Milestone2
 - Schematic Drawing
