@@ -5,10 +5,10 @@
 - Assignment & Milestone specifications can be found in `./Specifications`
 
 # Assignments
-- Implement & analayze sorting algorithm w/ RV32I assembly
+- Implement & analayze **sorting algorithm w/ RV32I assembly**
 
 # Milestone
-- Implement simple single-cyle RV32I CPU which supports pipelining (Verilog) 
+- Implement simple **single-cyle RV32I CPU which supports pipelining** (**Verilog**) 
 
 ### Milestone2
 - Schematic Drawing
