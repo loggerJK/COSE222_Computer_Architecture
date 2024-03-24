@@ -1,3 +1,6 @@
 *.lnk
 image/
 gitpush.*
+/RV32I_*/
+/RV32I_HW_System/
+Submissions/*.zip
